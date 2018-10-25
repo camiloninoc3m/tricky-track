@@ -8,27 +8,67 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+
+import co.com.c3m.trickytrack.util.FechaUtil;
 
 @Entity
+@Table(
+		uniqueConstraints=@UniqueConstraint(columnNames={"nombre", "longitud","latitud"})
+)
 public class Establecimiento {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotNull
 	private String nombre;
+	
 	private String direccion;
+	
+	@NotNull
 	private Double longitud;
+	
+	@NotNull
 	private Double latitud;
-	private Boolean lunes;
-	private Boolean martes;
-	private Boolean miercoles;
-	private Boolean jueves;
-	private Boolean viernes;
-	private Boolean sabado;
-	private Boolean domingo;
-	private Date horaInicio;
-	private Date horaCierre;
-	private List<String> generosMusicales = new ArrayList<>();
+	
+	@NotNull
+	private Boolean lunes = Boolean.TRUE;
+	
+	@NotNull
+	private Boolean martes = Boolean.TRUE;
+	
+	@NotNull
+	private Boolean miercoles = Boolean.TRUE;
+	
+	@NotNull
+	private Boolean jueves = Boolean.TRUE;
+	
+	@NotNull
+	private Boolean viernes = Boolean.TRUE;
+	
+	@NotNull
+	private Boolean sabado = Boolean.TRUE;
+	
+	@NotNull
+	private Boolean domingo = Boolean.TRUE;
+	
+	@NotNull
+	@Temporal(TemporalType.TIME)
+	private Date horaInicio = FechaUtil.obtenerFechaTiempo(12, 00, 00);
+	
+	@NotNull
+	@Temporal(TemporalType.TIME)
+	private Date horaCierre = FechaUtil.obtenerFechaTiempo(03, 00, 00);
+	
+	@ManyToMany
+	private List<GeneroMusical> generos = new ArrayList<>();
 	
 	public Long getId() {
 		return id;
@@ -114,10 +154,10 @@ public class Establecimiento {
 	public void setHoraCierre(Date horaCierre) {
 		this.horaCierre = horaCierre;
 	}
-	public List<String> getGenerosMusicales() {
-		return generosMusicales;
+	public List<GeneroMusical> getGeneros() {
+		return generos;
 	}
-	public void setGenerosMusicales(List<String> generosMusicales) {
-		this.generosMusicales = generosMusicales;
+	public void setGeneros(List<GeneroMusical> generos) {
+		this.generos = generos;
 	}
 }

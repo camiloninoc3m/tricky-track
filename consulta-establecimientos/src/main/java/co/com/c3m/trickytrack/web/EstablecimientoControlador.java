@@ -1,7 +1,6 @@
 package co.com.c3m.trickytrack.web;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.c3m.trickytrack.dominio.Establecimiento;
+import co.com.c3m.trickytrack.repositorio.rowmapper.EstablecimientoRowmapper;
 
 @RestController
 public class EstablecimientoControlador {
@@ -23,15 +23,7 @@ public class EstablecimientoControlador {
 			@RequestParam String nombre,
 			@RequestParam Double longitud,
 			@RequestParam Double latitud,
-			@RequestParam Boolean lunes,
-			@RequestParam Boolean martes,
-			@RequestParam Boolean miercoles,
-			@RequestParam Boolean jueves,
-			@RequestParam Boolean viernes,
-			@RequestParam Boolean sabado,
-			@RequestParam Boolean domingo,
-			@RequestParam Date horaInicio,
-			@RequestParam Date horaCierre,
+			@RequestParam Boolean validaHorario,
 			@RequestParam List<String> generos){
 		List<String> parametros = new ArrayList<>();
 		StringBuilder qry = new StringBuilder("SELECT * FROM ESTABLECIMIENTO WHERE 1=1");
@@ -45,6 +37,6 @@ public class EstablecimientoControlador {
 			parametros.add("%"+nombre+"%");
 		}
 		
-		return jdbcTemplate.queryForList(qry.toString(), parametros.toArray(), Establecimiento.class);
+		return jdbcTemplate.query(qry.toString(), parametros.toArray(), new EstablecimientoRowmapper() );
 	}
 }
