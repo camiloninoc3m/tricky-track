@@ -32,7 +32,7 @@ public class EstablecimientoControlador {
 		if ((longitud!=null && latitud==null) || 
 				(latitud!=null && longitud==null)) {
 			throw new RuntimeException("Se debe ingresar latitud y longitud");
-		}else {
+		}else if (longitud!=null && latitud!=null){
 			qry.append("AND ID IN (SELECT ID FROM (SELECT id, ")
 			.append("(6371 * acos ( cos ( radians(4.652052) )")
 			.append("* cos( radians( latitud ) ) ")
@@ -49,7 +49,7 @@ public class EstablecimientoControlador {
 			qry.append("AND NOMBRE LIKE ? ");
 			parametros.add("%"+nombre+"%");
 		}
-		if (validaHorario) {
+		if (null!=validaHorario && validaHorario) {
 			Calendar cal = Calendar.getInstance();
 			int dia = cal.get(Calendar.DAY_OF_WEEK);
 
