@@ -21,6 +21,7 @@ public class SplashActivity extends Activity {
             public void run() {
                 Intent intent = new Intent(SplashActivity.this, PlaceForm.class);
                 startActivity(intent);
+                finish();
             }
         }, 4000); // 4 seconds
     }
