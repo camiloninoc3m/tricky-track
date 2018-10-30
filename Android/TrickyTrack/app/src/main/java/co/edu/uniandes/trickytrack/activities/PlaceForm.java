@@ -3,6 +3,7 @@ package co.edu.uniandes.trickytrack.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -44,6 +45,12 @@ import java.util.List;
 import co.edu.uniandes.trickytrack.R;
 import co.edu.uniandes.trickytrack.adapters.RecyclerViewAdapter;
 import co.edu.uniandes.trickytrack.models.Model;
+import co.edu.uniandes.trickytrack.retrofit.Example;
+import co.edu.uniandes.trickytrack.retrofit.GenericaInterfazRetrofitJson;
+import co.edu.uniandes.trickytrack.retrofit.Util;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PlaceForm extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks,
@@ -95,18 +102,19 @@ public class PlaceForm extends AppCompatActivity implements GoogleApiClient.OnCo
                 .build();
         toggleLocationUpdates(true);
 
+        //btn event clic
         search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 seleccionados= new ArrayList<>();
                 generos="";
-                url="";
+
                for(int i=0;i<mAdapter.getmModelList().size();i++){
                    if(mAdapter.getmModelList().get(i).isSelected()){
                        seleccionados.add(mAdapter.getmModelList().get(i).getText());
                    }
                 }
-                 url="http://3.16.31.253:8080/establecimientos?nombre";
+                 url="establecimientos?nombre";
                String url_coordenada="&longitud&latitud";
                if(latitudn!=0||longitudn!=0){
                 url_coordenada="&longitud="+longitudn+"&latitud="+latitudn;
@@ -124,11 +132,43 @@ public class PlaceForm extends AppCompatActivity implements GoogleApiClient.OnCo
                }
 
                url=url+generos;
-                Log.i("url","url "+url);
+                final ProgressDialog progress = new ProgressDialog(PlaceForm.this);
+                progress.setMessage("Cargando");
+                progress.show();
+                progress.setCancelable(true);
+                GenericaInterfazRetrofitJson mService = null;
+                mService = Util.getService();
+                mService.getPlaces(url).enqueue(new Callback<List<Example>>() {
+                    @Override
+                    public void onResponse(Call<List<Example>> call, Response<List<Example>> response) {
+
+                        if (response.isSuccessful()) {
+
+                                if(response.body().size()>0){
+                                    
+                                }else{
+                                    Toast.makeText(PlaceForm.this,"Busqueda sin resultados",Toast.LENGTH_SHORT).show();
+
+                                }
+
+                        } else {
+                            Toast.makeText(PlaceForm.this,"Busqueda sin resultados",Toast.LENGTH_SHORT).show();
+
+                        }
+                        progress.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Example>>call, Throwable t) {
+                        progress.dismiss();
+                        Toast.makeText(PlaceForm.this,"Busqueda sin resultados",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
     }
-
+    //llenar generos musicales
     private List<Model> getListData() {
         mModelList = new ArrayList<>();
         String[] resourceString =getResources().getStringArray(R.array.genders);
@@ -320,7 +360,7 @@ public class PlaceForm extends AppCompatActivity implements GoogleApiClient.OnCo
         updateUI(location);
     }
 
-
+//end region gps
 
 
 }
