@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Tricky Track</string>
+    <string name="place_title">Búsqueda de establecimientos</string>
+    <string name="search">Buscar un bar</string>
+    <string name="gender">Generos</string>
+    <array name="genders">
+        <item>Rock</item>
+        <item>Punk</item>
+        <item>New Age</item>
+        <item>Vallenato</item>
+        <item>Salsa</item>
+        <item>Años 80</item>
+        <item>Merengue</item>
+        <item>Regueton</item>
+        <item>Metal</item>
+        <item>Crossover</item>
+        <item>Dancehall</item>
+    </array>
+    <string name="validate">Validar horario</string>
+    <string name="nearme">Buscar cercanos</string>
+    <string name="find_button">Buscar</string>
+</resources>
