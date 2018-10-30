@@ -19,4 +19,5 @@
     <string name="validate">Validar horario</string>
     <string name="nearme">Buscar cercanos</string>
     <string name="find_button">Buscar</string>
+    <string name="title_activity_maps">Buscar establecimientos</string>
 </resources>

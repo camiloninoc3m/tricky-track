@@ -15,11 +15,16 @@ import co.edu.uniandes.trickytrack.models.Model;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
     Context context;
-    private List<Model> mModelList;
+    public List<Model> mModelList;
 
     public RecyclerViewAdapter(List<Model> modelList,Context context) {
         mModelList = modelList;
         this.context=context;
+    }
+
+    public List<Model> getmModelList(){
+
+        return  mModelList;
     }
 
     @Override
@@ -41,6 +46,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
         });
     }
+
 
     @Override
     public int getItemCount() {

@@ -20,7 +20,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -46,7 +50,7 @@ public class PlaceForm extends AppCompatActivity implements GoogleApiClient.OnCo
         com.google.android.gms.location.LocationListener {
     private List<Model> mModelList;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerViewAdapter mAdapter;
 
     private static final String LOGTAG = "android-localizacion";
 
@@ -59,7 +63,12 @@ public class PlaceForm extends AppCompatActivity implements GoogleApiClient.OnCo
     double latitudn, longitudn;
 
     private LocationRequest locRequest;
-
+    private List<String> seleccionados;
+    EditText search_bar;
+    CheckBox validate_schedule;
+    Button search_btn;
+    String generos="";
+    String url="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +77,9 @@ public class PlaceForm extends AppCompatActivity implements GoogleApiClient.OnCo
 
         mRecyclerView = (RecyclerView) findViewById(R.id.gender_spinner);
         mAdapter = new RecyclerViewAdapter(getListData(),getApplicationContext());
+         search_bar=(EditText)findViewById(R.id.search_bar);
+         validate_schedule=(CheckBox)findViewById(R.id.validate_schedule);
+        search_btn=(Button)findViewById(R.id.search_btn);
         LinearLayoutManager manager = new LinearLayoutManager(PlaceForm.this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(manager);
@@ -82,6 +94,39 @@ public class PlaceForm extends AppCompatActivity implements GoogleApiClient.OnCo
                 .addApi(LocationServices.API)
                 .build();
         toggleLocationUpdates(true);
+
+        search_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seleccionados= new ArrayList<>();
+                generos="";
+                url="";
+               for(int i=0;i<mAdapter.getmModelList().size();i++){
+                   if(mAdapter.getmModelList().get(i).isSelected()){
+                       seleccionados.add(mAdapter.getmModelList().get(i).getText());
+                   }
+                }
+                 url="http://3.16.31.253:8080/establecimientos?nombre";
+               String url_coordenada="&longitud&latitud";
+               if(latitudn!=0||longitudn!=0){
+                url_coordenada="&longitud="+longitudn+"&latitud="+latitudn;
+               }
+               url=url+url_coordenada;
+               String valida_horario="&validaHorario="+validate_schedule.isChecked();
+               url=url+valida_horario;
+
+               if(seleccionados.size()>0){
+                   for(int i=0; i<seleccionados.size();i++){
+                       generos=generos+"&generos"+"="+seleccionados.get(i);
+                   }
+               }else{
+                   generos="&generos";
+               }
+
+               url=url+generos;
+                Log.i("url","url "+url);
+            }
+        });
     }
 
     private List<Model> getListData() {
