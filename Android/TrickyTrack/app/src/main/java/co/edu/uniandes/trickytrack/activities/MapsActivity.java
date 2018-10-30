@@ -41,24 +41,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             String dias="";
             if(elementos.getElementos().get(i).getLunes()){
                 dias=dias+"Lunes -";
-            }else if(elementos.getElementos().get(i).getMartes()){
-                dias+=dias+"Martes -";
+            } if(elementos.getElementos().get(i).getMartes()){
+                dias=dias+"Martes -";
 
-            }else if(elementos.getElementos().get(i).getMiercoles()){
-                dias+=dias+"Miercoles-";
+            } if(elementos.getElementos().get(i).getMiercoles()){
+                dias=dias+"Miercoles-";
 
-            }else if(elementos.getElementos().get(i).getJueves()){
-                dias+=dias+"Jueves-";
+            } if(elementos.getElementos().get(i).getJueves()){
+                dias=dias+"Jueves-";
 
-            }else if(elementos.getElementos().get(i).getViernes()){
-                dias+=dias+"Viernes-";
+            } if(elementos.getElementos().get(i).getViernes()){
+                dias=dias+"Viernes-";
 
-            }else if(elementos.getElementos().get(i).getSabado()){
-                dias+=dias+"Sabado-";
+            } if(elementos.getElementos().get(i).getSabado()){
+                dias=dias+"Sabado-";
 
             }
-            else if(elementos.getElementos().get(i).getDomingo()){
-                dias+=dias+"Domingo";
+             if(elementos.getElementos().get(i).getDomingo()){
+                dias=dias+"Domingo";
 
             }
 
@@ -67,7 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.addMarker(new MarkerOptions().position(sydney).title(elementos.getElementos().get(i).getNombre()).snippet(
                     "Direccion: "+elementos.getElementos().get(i).getDireccion()+"--Dias "+dias+"--Horario atencion: "+
                             elementos.getElementos().get(i).getHoraInicio()+"-"+elementos.getElementos().get(i).getHoraCierre()
-            ));
+            )).showInfoWindow();
         }
 
         LatLng me = new LatLng(latitudn,longitudn);
