@@ -1,4 +1,4 @@
-package co.edu.uniandes.trickytrack.activities.adapters;
+package co.edu.uniandes.trickytrack.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import co.edu.uniandes.trickytrack.R;
-import co.edu.uniandes.trickytrack.activities.models.Model;
+import co.edu.uniandes.trickytrack.models.Model;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
     Context context;

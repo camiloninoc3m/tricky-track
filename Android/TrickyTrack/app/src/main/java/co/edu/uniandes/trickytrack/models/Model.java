@@ -1,4 +1,4 @@
-package co.edu.uniandes.trickytrack.activities.models;
+package co.edu.uniandes.trickytrack.models;
 
 public class Model {
     private String text;
