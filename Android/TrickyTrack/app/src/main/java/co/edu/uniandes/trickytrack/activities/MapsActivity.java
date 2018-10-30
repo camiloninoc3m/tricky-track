@@ -2,6 +2,7 @@ package co.edu.uniandes.trickytrack.activities;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -11,6 +12,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import co.edu.uniandes.trickytrack.R;
+import co.edu.uniandes.trickytrack.retrofit.Elementos;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -27,22 +29,52 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        Elementos elementos;
+        elementos = (Elementos)getIntent().getSerializableExtra("puntos");
+        double latitudn, longitudn;
+        latitudn=getIntent().getExtras().getDouble("latitud");
+        longitudn=getIntent().getExtras().getDouble("longitud");
+        for(int i=0;i<elementos.getElementos().size();i++){
+            String dias="";
+            if(elementos.getElementos().get(i).getLunes()){
+                dias=dias+"Lunes -";
+            }else if(elementos.getElementos().get(i).getMartes()){
+                dias+=dias+"Martes -";
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            }else if(elementos.getElementos().get(i).getMiercoles()){
+                dias+=dias+"Miercoles-";
+
+            }else if(elementos.getElementos().get(i).getJueves()){
+                dias+=dias+"Jueves-";
+
+            }else if(elementos.getElementos().get(i).getViernes()){
+                dias+=dias+"Viernes-";
+
+            }else if(elementos.getElementos().get(i).getSabado()){
+                dias+=dias+"Sabado-";
+
+            }
+            else if(elementos.getElementos().get(i).getDomingo()){
+                dias+=dias+"Domingo";
+
+            }
+
+
+            LatLng sydney = new LatLng(elementos.getElementos().get(i).getLatitud(), elementos.getElementos().get(i).getLongitud());
+            mMap.addMarker(new MarkerOptions().position(sydney).title(elementos.getElementos().get(i).getNombre()).snippet(
+                    "Direccion: "+elementos.getElementos().get(i).getDireccion()+"--Dias "+dias+"--Horario atencion: "+
+                            elementos.getElementos().get(i).getHoraInicio()+"-"+elementos.getElementos().get(i).getHoraCierre()
+            ));
+        }
+
+        LatLng me = new LatLng(latitudn,longitudn);
+        mMap.addMarker(new MarkerOptions().position(me).title("Mi ubicacion")
+        );
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(me));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(me,18));
+
     }
 }

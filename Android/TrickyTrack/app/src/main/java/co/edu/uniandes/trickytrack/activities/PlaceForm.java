@@ -45,6 +45,7 @@ import java.util.List;
 import co.edu.uniandes.trickytrack.R;
 import co.edu.uniandes.trickytrack.adapters.RecyclerViewAdapter;
 import co.edu.uniandes.trickytrack.models.Model;
+import co.edu.uniandes.trickytrack.retrofit.Elementos;
 import co.edu.uniandes.trickytrack.retrofit.Example;
 import co.edu.uniandes.trickytrack.retrofit.GenericaInterfazRetrofitJson;
 import co.edu.uniandes.trickytrack.retrofit.Util;
@@ -85,6 +86,7 @@ public class PlaceForm extends AppCompatActivity implements GoogleApiClient.OnCo
         mRecyclerView = (RecyclerView) findViewById(R.id.gender_spinner);
         mAdapter = new RecyclerViewAdapter(getListData(),getApplicationContext());
          search_bar=(EditText)findViewById(R.id.search_bar);
+
          validate_schedule=(CheckBox)findViewById(R.id.validate_schedule);
         search_btn=(Button)findViewById(R.id.search_btn);
         LinearLayoutManager manager = new LinearLayoutManager(PlaceForm.this);
@@ -145,7 +147,13 @@ public class PlaceForm extends AppCompatActivity implements GoogleApiClient.OnCo
                         if (response.isSuccessful()) {
 
                                 if(response.body().size()>0){
-                                    
+                                    Elementos elementos= new Elementos();
+                                    elementos.setElementos(response.body());
+                                    Intent intent= new Intent(PlaceForm.this,MapsActivity.class);
+                                    intent.putExtra("puntos",elementos);
+                                    intent.putExtra("latitud",latitudn);
+                                    intent.putExtra("longitud",longitudn);
+                                    startActivity(intent);
                                 }else{
                                     Toast.makeText(PlaceForm.this,"Busqueda sin resultados",Toast.LENGTH_SHORT).show();
 
