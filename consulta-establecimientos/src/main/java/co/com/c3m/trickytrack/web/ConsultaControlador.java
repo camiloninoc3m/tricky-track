@@ -16,7 +16,7 @@ import co.com.c3m.trickytrack.dominio.Establecimiento;
 import co.com.c3m.trickytrack.repositorio.rowmapper.EstablecimientoRowmapper;
 
 @RestController
-public class EstablecimientoControlador {
+public class ConsultaControlador {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
