@@ -16,8 +16,9 @@ public class RegistroControlador {
 	private EstablecimientoDAO dao;
 	
 	@RequestMapping(path="/establecimiento", method=RequestMethod.POST)
-	public void registrarEstablecimiento(
+	public Long registrarEstablecimiento(
 			@RequestBody Establecimiento establecimiento) {
 		dao.save(establecimiento);
+		return establecimiento.getId();
 	}
 }
