@@ -26,6 +26,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -75,18 +77,21 @@ public class PlaceForm extends AppCompatActivity implements GoogleApiClient.OnCo
     EditText search_bar;
     CheckBox validate_schedule;
     Button search_btn;
+    SeekBar seekBar;
     String generos="";
     String url="";
+    int progress=0;
+    TextView distancia;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_form);
         getSupportActionBar().setTitle(getString(R.string.place_title));
-
+        distancia=(TextView)findViewById(R.id.distancia);
         mRecyclerView = (RecyclerView) findViewById(R.id.gender_spinner);
         mAdapter = new RecyclerViewAdapter(getListData(),getApplicationContext());
          search_bar=(EditText)findViewById(R.id.search_bar);
-
+        seekBar=(SeekBar)findViewById(R.id.seekBar1);
          validate_schedule=(CheckBox)findViewById(R.id.validate_schedule);
         search_btn=(Button)findViewById(R.id.search_btn);
         LinearLayoutManager manager = new LinearLayoutManager(PlaceForm.this);
@@ -103,7 +108,25 @@ public class PlaceForm extends AppCompatActivity implements GoogleApiClient.OnCo
                 .addApi(LocationServices.API)
                 .build();
         toggleLocationUpdates(true);
+//slider de distancia
+        distancia.setText("Distancia: "+seekBar.getProgress()+"\n metros");
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                progress = i;
 
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                distancia.setText("Distancia: "+progress+"\n metros");
+            }
+        });
         //btn event clic
         search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,12 +139,14 @@ public class PlaceForm extends AppCompatActivity implements GoogleApiClient.OnCo
                        seleccionados.add(mAdapter.getmModelList().get(i).getText());
                    }
                 }
-                 url="establecimientos?nombre";
+                 url="establecimientos?nombre="+search_bar.getText().toString();
                String url_coordenada="&longitud&latitud";
                if(latitudn!=0||longitudn!=0){
                 url_coordenada="&longitud="+longitudn+"&latitud="+latitudn;
                }
                url=url+url_coordenada;
+               String distancia="&distancia="+String.valueOf(progress);
+               url=url+distancia;
                String valida_horario="&validaHorario="+validate_schedule.isChecked();
                url=url+valida_horario;
 
@@ -134,6 +159,7 @@ public class PlaceForm extends AppCompatActivity implements GoogleApiClient.OnCo
                }
 
                url=url+generos;
+Log.i("buscar","buscar "+url);
                 final ProgressDialog progress = new ProgressDialog(PlaceForm.this);
                 progress.setMessage("Cargando");
                 progress.show();

@@ -10,35 +10,35 @@
     tools:context=".activities.PlaceForm">
 
     <EditText
-        android:layout_alignParentTop="true"
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_margin="10dp"
         android:hint="@string/search"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/darker_gray" />
 
     <LinearLayout
-        android:layout_above="@+id/search_btn"
-        android:layout_below="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/search_btn"
+        android:layout_below="@+id/search_bar"
         android:orientation="horizontal">
 
 
         <LinearLayout
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_marginRight="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginRight="5dp"
                 android:text="@string/gender"
                 android:textColor="@android:color/white" />
 
@@ -62,9 +62,9 @@
             android:text="Switch" />
 
         <LinearLayout
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
 
 
@@ -91,28 +91,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_gravity="left"
                     android:text="@string/nearme"
                     android:textColor="@android:color/white" />
 
-                <CheckBox
-                    android:id="@+id/validate_nearme"
+                <SeekBar
+
+                    android:id="@+id/seekBar1"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dp"
+                    android:min="0"
+                    android:max="20000" />
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text=""
+                    android:id="@+id/distancia"
+                    android:textColor="@android:color/white" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
     <Button
         android:id="@+id/search_btn"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
         android:background="@color/colorPrimary"
         android:text="@string/find_button"
