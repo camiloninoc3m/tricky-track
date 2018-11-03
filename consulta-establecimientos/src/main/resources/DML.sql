@@ -33,3 +33,15 @@ INSERT INTO establecimiento (NOMBRE,LONGITUD,LATITUD) VALUES ('Harry''s Bar',-74
 INSERT INTO establecimiento (NOMBRE,LONGITUD,LATITUD) VALUES ('Indigo Club 51',-74.0555773,4.652052);
 INSERT INTO establecimiento (NOMBRE,LONGITUD,LATITUD) VALUES ('Abbott y Costello',-74.0640728,4.6380641);
 INSERT INTO establecimiento (NOMBRE,LONGITUD,LATITUD) VALUES ('Bianca bar',-74.0623763,4.6394041);
+
+insert into tricky_track.genero_musical (nombre) values ('Rock');
+insert into tricky_track.genero_musical (nombre) values ('Punk');
+insert into tricky_track.genero_musical (nombre) values ('New Age');
+insert into tricky_track.genero_musical (nombre) values ('Vallenato');
+insert into tricky_track.genero_musical (nombre) values ('Salsa');
+insert into tricky_track.genero_musical (nombre) values ('Años 80');
+insert into tricky_track.genero_musical (nombre) values ('Merengue');
+insert into tricky_track.genero_musical (nombre) values ('Regueton');
+insert into tricky_track.genero_musical (nombre) values ('Metal');
+insert into tricky_track.genero_musical (nombre) values ('Crossover');
+insert into tricky_track.genero_musical (nombre) values ('Dancehall');
