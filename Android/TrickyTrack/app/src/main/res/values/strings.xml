@@ -1,4 +1,7 @@
 <resources>
+    <string name="client">Cliente</string>
+    <string name="place">Establecimiento</string>
+    <string name="choose_profile">Seleccionar perfil</string>
     <string name="app_name">Tricky Track</string>
     <string name="place_title">Búsqueda de establecimientos</string>
     <string name="search">Buscar un bar</string>

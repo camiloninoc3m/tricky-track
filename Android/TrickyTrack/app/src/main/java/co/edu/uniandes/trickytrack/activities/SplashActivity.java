@@ -19,7 +19,7 @@ public class SplashActivity extends Activity {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashActivity.this, PlaceForm.class);
+                Intent intent = new Intent(SplashActivity.this, ProfileActivity.class);
                 startActivity(intent);
                 finish();
             }
