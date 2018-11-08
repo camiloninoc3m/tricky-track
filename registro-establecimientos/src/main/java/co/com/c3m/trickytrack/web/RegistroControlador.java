@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.c3m.trickytrack.dominio.Establecimiento;
-import co.com.c3m.trickytrack.repositorio.rowmapper.EstablecimientoDAO;
+import co.com.c3m.trickytrack.repositorio.EstablecimientoDAO;
 
 @RestController
 public class RegistroControlador {

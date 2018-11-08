@@ -1,0 +1,30 @@
+version: "3"
+services:
+  consulta-establecimientos:
+    image: camiloninoc3m/consulta-establecimientos:latest
+    ports:
+      - "8080:8080"
+  consulta-generos:
+    image: camiloninoc3m/consulta-generos:latest
+    ports:
+      - "8081:8081"
+  registro-establecimientos:
+    image: camiloninoc3m/registro-establecimientos:latest
+    ports:
+      - "8082:8082"
+  registro-promociones:
+    image: camiloninoc3m/registro-promociones:latest
+    ports:
+      - "8083:8083"
+  consulta-promociones:
+    image: camiloninoc3m/consulta-promociones:latest
+    ports:
+      - "8084:8084"
+  adquirir-cupones:
+    image: camiloninoc3m/adquirir-cupones:latest
+    ports:
+      - "8085:8085"
+    networks:
+      - webnet
+networks:
+  webnet:
