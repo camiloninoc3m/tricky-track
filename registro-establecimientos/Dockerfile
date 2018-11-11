@@ -3,4 +3,4 @@ MAINTAINER Camilo Niño <camilo.nino@c3m.com.co>
 WORKDIR /app
 COPY target/registro-establecimientos-0.0.1-SNAPSHOT.jar /app
 ENTRYPOINT ["java", "-jar", "registro-establecimientos-0.0.1-SNAPSHOT.jar"]
-EXPOSE 8080
+EXPOSE 8082

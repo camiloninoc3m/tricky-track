@@ -7,5 +7,6 @@ import co.com.c3m.trickytrack.dominio.Establecimiento;
 
 @Repository
 public interface EstablecimientoDAO extends CrudRepository<Establecimiento, Long>{
-
+	
+	Establecimiento findByCelular(String celular);
 }
