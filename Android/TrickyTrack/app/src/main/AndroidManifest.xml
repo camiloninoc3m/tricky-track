@@ -43,10 +43,13 @@
         <activity
             android:name=".activities.ProfileActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.PromPlaceActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".activities.SearchingActivity"
+        <activity
+            android:name=".activities.PromPlaceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.SearchingActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.ListPromActivity"
             android:screenOrientation="portrait"
             ></activity>
     </application>
