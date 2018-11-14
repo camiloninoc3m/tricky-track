@@ -187,7 +187,7 @@ public class SearchingActivity extends AppCompatActivity implements GoogleApiCli
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                         try {
-                            Toast.makeText(SearchingActivity.this, "Se requiere activar GPS primero", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SearchingActivity.this, "Se requiere activar GPS primero y volver a seleccionar Cliente en la pantalla anterior", Toast.LENGTH_SHORT).show();
                             status.startResolutionForResult(SearchingActivity.this, PETICION_CONFIG_UBICACION);
                         } catch (IntentSender.SendIntentException e) {
                             //btnActualizar.setChecked(false);

@@ -1,4 +1,5 @@
 <resources>
+    <string name="barpromotion">Nombre de la promocion</string>
     <string name="client">Cliente</string>
     <string name="place">Establecimiento</string>
     <string name="choose_profile">Seleccionar perfil</string>
