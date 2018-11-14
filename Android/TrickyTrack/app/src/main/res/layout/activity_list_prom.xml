@@ -5,5 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.ListPromActivity">
-
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="aqui va la Consulta promociones"
+    />
 </android.support.constraint.ConstraintLayout>
