@@ -2,7 +2,7 @@ package co.com.c3m.trickytrack.api;
 
 import java.util.Date;
 
-public class PromocionDTO {
+public class ConsultaPromocionDTO {
 
 	private Long id;
 	

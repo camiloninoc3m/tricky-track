@@ -11,7 +11,7 @@ import co.com.c3m.trickytrack.dominio.GeneroMusical;
 import co.com.c3m.trickytrack.repositorio.GeneroDAO;
 
 @RestController
-public class ConsultaControlador {
+public class ConsultaGenerosControlador {
 
 	@Autowired
 	private GeneroDAO dao;
