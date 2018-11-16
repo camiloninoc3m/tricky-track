@@ -30,6 +30,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -192,7 +193,7 @@ public class PromPlaceActivity extends AppCompatActivity {
                         RequestQueue requestQueue = Volley.newRequestQueue(PromPlaceActivity.this);
 
 //
-                     /*   StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                                 new Response.Listener<String>() {
                                     @Override
                                     public void onResponse(String response) {
@@ -228,9 +229,14 @@ public class PromPlaceActivity extends AppCompatActivity {
 
                                 return params;
                             }
-
-                        };*/
-                        HashMap<String, String> params = new HashMap<String, String>();
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                Map<String,String> params = new HashMap<String, String>();
+                                params.put("Content-Type","application/x-www-form-urlencoded");
+                                return params;
+                            }
+                        };
+                     /*   HashMap<String, String> params = new HashMap<String, String>();
                         params.put("celular", numberPhone);
                         params.put("nombre", promotion_bar.getText().toString());
                         params.put("fechaInicio", start_date.getText().toString());
@@ -254,8 +260,8 @@ public class PromPlaceActivity extends AppCompatActivity {
                                 progress.dismiss();
                                 Toast.makeText(getApplicationContext(),"error de peticion "+error.toString(),Toast.LENGTH_SHORT).show();
                             }
-                        });
-                        requestQueue.add(req);
+                        });*/
+                        requestQueue.add(stringRequest);
 
                     } catch (Exception e) {
                         progress.dismiss();
