@@ -2,13 +2,24 @@ package co.edu.uniandes.trickytrack.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,11 +30,30 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import co.edu.uniandes.trickytrack.R;
+import co.edu.uniandes.trickytrack.retrofit.Util;
 
 public class PromPlaceActivity extends AppCompatActivity {
     String numberPhone = "3115321435";
@@ -32,7 +62,8 @@ public class PromPlaceActivity extends AppCompatActivity {
     CheckBox prom_active;
     Button search_image, save;
     TextView ruta;
-
+    int SELECT_FILE=22;
+    int REQUEST_CAMERA=3;
     Calendar myCalendar = Calendar.getInstance();
 
     DatePickerDialog.OnDateSetListener date1 = new
@@ -95,7 +126,8 @@ public class PromPlaceActivity extends AppCompatActivity {
         ruta = (TextView) findViewById(R.id.ruta);
         save = (Button) findViewById(R.id.save);
         try {
-            Log.i("numtelef", "numtelf " + getPhone());
+            numberPhone=getPhone();
+            Log.i("numtelef", "numtelf " + numberPhone);
         } catch (Exception e) {
 
             Toast.makeText(getApplicationContext(), "No se puede completar carga de su numero de telefono\n.Contactar admin ", Toast.LENGTH_SHORT).show();
@@ -140,7 +172,97 @@ public class PromPlaceActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //promotion_bar, start_date, end_date, valor_prom, cantidad
 
+                if(promotion_bar.getText().toString().isEmpty()||start_date.getText().toString().isEmpty()||end_date.getText().toString().isEmpty()
+                        ||valor_prom.getText().toString().isEmpty()||cantidad.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(),"LLenar los campos",Toast.LENGTH_SHORT).show();
+                }else{
+
+                    final ProgressDialog progress = new ProgressDialog(PromPlaceActivity.this);
+                    progress.setMessage("enviando...");
+                    progress.show();
+                    progress.setCancelable(true);
+
+                    String url = Util.BASE_URL + "promocion";
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+
+                    try {
+                        RequestQueue requestQueue = Volley.newRequestQueue(PromPlaceActivity.this);
+
+//
+                     /*   StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        progress.dismiss();
+                                        try {
+                                            Toast.makeText(getApplicationContext(),"Promocion creada "+response,Toast.LENGTH_SHORT).show();
+
+                                        } catch (Throwable tx) {
+                                            Toast.makeText(getApplicationContext(),"error de creacion",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        progress.dismiss();
+                                        Toast.makeText(getApplicationContext(),"error de peticion "+error.toString(),Toast.LENGTH_SHORT).show();
+                                    }
+                                }) {
+                            @Override
+                            protected Map<String, String> getParams() {
+                                Map<String, String> params = new HashMap<String, String>();
+
+                                params.put("celular", numberPhone);
+                                params.put("nombre", promotion_bar.getText().toString());
+                                params.put("fechaInicio", start_date.getText().toString());
+                                params.put("fechaFin", end_date.getText().toString());
+                                params.put("cantidad", cantidad.getText().toString());
+                                params.put("valor", valor_prom.getText().toString());
+                                params.put("imagen","");
+                                params.put("activa", String.valueOf(prom_active.isChecked()));
+
+
+                                return params;
+                            }
+
+                        };*/
+                        HashMap<String, String> params = new HashMap<String, String>();
+                        params.put("celular", numberPhone);
+                        params.put("nombre", promotion_bar.getText().toString());
+                        params.put("fechaInicio", start_date.getText().toString());
+                        params.put("fechaFin", end_date.getText().toString());
+                        params.put("cantidad", cantidad.getText().toString());
+                        params.put("valor", valor_prom.getText().toString());
+                        params.put("imagen","");
+                        params.put("activa", String.valueOf(prom_active.isChecked()));
+
+
+                        JsonObjectRequest req = new JsonObjectRequest(url, new JSONObject(params),
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        progress.dismiss();
+                                        Toast.makeText(getApplicationContext(),"Promocion creada "+response,Toast.LENGTH_SHORT).show();
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                progress.dismiss();
+                                Toast.makeText(getApplicationContext(),"error de peticion "+error.toString(),Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        requestQueue.add(req);
+
+                    } catch (Exception e) {
+                        progress.dismiss();
+                        Toast.makeText(getApplicationContext(),"error de formulario",Toast.LENGTH_SHORT).show();
+
+                    }
+                }
             }
         });
     }
@@ -164,14 +286,17 @@ public class PromPlaceActivity extends AppCompatActivity {
                 //return TODO;
             }
             MyPhoneNumber = tMgr.getLine1Number();
-        }
-        catch(NullPointerException ex)
-        {
+        } catch (NullPointerException ex) {
         }
 
-        if(MyPhoneNumber.equals("")){
+        if (MyPhoneNumber.equals("")) {
             MyPhoneNumber = tMgr.getSubscriberId();
         }
-    return MyPhoneNumber;
+        return MyPhoneNumber;
     }
+
+
+
+
+
 }
