@@ -9,4 +9,7 @@ import retrofit2.http.Url;
 public interface GenericaInterfazRetrofitJson {
     @GET
     Call<List<Example>> getPlaces(@Url String url);
+
+    @GET
+    Call<List<ExamplePromocion>> getPromociones(@Url String url);
 }

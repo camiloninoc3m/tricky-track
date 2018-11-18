@@ -83,7 +83,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ).setTag(0);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(me));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(me,18));
-
+        mMap.getUiSettings().setZoomControlsEnabled(true);
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
