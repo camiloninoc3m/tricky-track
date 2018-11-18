@@ -1,16 +1,21 @@
 package co.edu.uniandes.trickytrack.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
 import co.edu.uniandes.trickytrack.R;
+import co.edu.uniandes.trickytrack.activities.MapsActivity;
+import co.edu.uniandes.trickytrack.activities.RedimirActivity;
+import co.edu.uniandes.trickytrack.activities.SearchingActivity;
 import co.edu.uniandes.trickytrack.models.Model;
 import co.edu.uniandes.trickytrack.retrofit.ElementosPromociones;
 import co.edu.uniandes.trickytrack.retrofit.ExamplePromocion;
@@ -42,6 +47,14 @@ public class AdapterProm extends RecyclerView.Adapter<AdapterProm.MyViewHolder2>
         holder.inicio.setText("Inicio: "+model.getFechaInicio());
         holder.fin.setText("Fin: "+model.getFechaFin());
         holder.fin.setText("Fin: "+model.getFechaFin());
+        holder.item_prom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, RedimirActivity.class);
+                intent.putExtra("idPromocion", String.valueOf(model.getId()));
+                context.startActivity(intent);
+            }
+        });
     }
 
 
@@ -53,6 +66,7 @@ public class AdapterProm extends RecyclerView.Adapter<AdapterProm.MyViewHolder2>
     public class MyViewHolder2 extends RecyclerView.ViewHolder {
 
         private View view;
+        RelativeLayout item_prom;
         private TextView item_nombre,valor,inicio,fin;
 
         private MyViewHolder2(View itemView) {
@@ -62,6 +76,7 @@ public class AdapterProm extends RecyclerView.Adapter<AdapterProm.MyViewHolder2>
             valor=(TextView) itemView.findViewById(R.id.valor);
             inicio=(TextView) itemView.findViewById(R.id.inicio);
             fin=(TextView) itemView.findViewById(R.id.fin);
+            item_prom=(RelativeLayout)itemView.findViewById(R.id.item_prom);
         }
     }
 }

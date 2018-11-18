@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/item_prom"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
     android:background="@android:color/white"

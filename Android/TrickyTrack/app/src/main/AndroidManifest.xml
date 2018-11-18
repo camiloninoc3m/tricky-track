@@ -55,6 +55,9 @@
         <activity android:name=".activities.ListPromActivity"
             android:screenOrientation="portrait"
             ></activity>
+        <activity android:name=".activities.RedimirActivity"
+            android:screenOrientation="portrait"
+            ></activity>
     </application>
 
 </manifest>

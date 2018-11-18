@@ -121,6 +121,7 @@ public class PromPlaceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prom_place);
+        getSupportActionBar().setTitle("Crear Promociones");
         promotion_bar = (EditText) findViewById(R.id.promotion_bar);
         start_date = (EditText) findViewById(R.id.start_date);
         end_date = (EditText) findViewById(R.id.end_date);

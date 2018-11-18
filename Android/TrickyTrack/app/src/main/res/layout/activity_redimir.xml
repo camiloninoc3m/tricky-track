@@ -4,6 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/backgroud"
     tools:context=".activities.RedimirActivity">
+
+    <TextView
+        android:id="@+id/nodata"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+/>
+
+    <LinearLayout
+
+        android:id="@+id/redencion"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:textColor="@android:color/white"
+            android:text="Escanea este codigo en el establecimiento y redime tu promocion"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/qr_redencion"
+
+            />
+    </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>
