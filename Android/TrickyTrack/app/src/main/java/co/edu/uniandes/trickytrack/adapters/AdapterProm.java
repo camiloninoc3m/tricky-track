@@ -13,9 +13,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import co.edu.uniandes.trickytrack.R;
-import co.edu.uniandes.trickytrack.activities.MapsActivity;
 import co.edu.uniandes.trickytrack.activities.RedimirActivity;
-import co.edu.uniandes.trickytrack.activities.SearchingActivity;
 import co.edu.uniandes.trickytrack.models.Model;
 import co.edu.uniandes.trickytrack.retrofit.ElementosPromociones;
 import co.edu.uniandes.trickytrack.retrofit.ExamplePromocion;
@@ -45,7 +43,6 @@ public class AdapterProm extends RecyclerView.Adapter<AdapterProm.MyViewHolder2>
         final ExamplePromocion model = mModelList.get(position);
         holder.item_nombre.setText("Promocion: "+model.getNombre());
         holder.inicio.setText("Inicio: "+model.getFechaInicio());
-        holder.fin.setText("Fin: "+model.getFechaFin());
         holder.fin.setText("Fin: "+model.getFechaFin());
         holder.item_prom.setOnClickListener(new View.OnClickListener() {
             @Override
