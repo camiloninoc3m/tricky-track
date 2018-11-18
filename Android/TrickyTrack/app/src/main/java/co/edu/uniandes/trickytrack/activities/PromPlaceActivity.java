@@ -88,7 +88,7 @@ public class PromPlaceActivity extends AppCompatActivity {
 
     private void updateLabel1() {
 
-        String myFormat = "yyyy/MM/dd'T'HH:mm:ss Z"; //In which you need put here
+        String myFormat = "yyyy-MM-dd'T'HH:mm:ssZ"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         start_date.setText(sdf.format(myCalendar.getTime()));
@@ -111,7 +111,7 @@ public class PromPlaceActivity extends AppCompatActivity {
 
     private void updateLabel2() {
 
-        String myFormat = "yyyy/MM/dd'T'HH:mm:ss Z"; //In which you need put here
+        String myFormat = "yyyy-MM-dd'T'HH:mm:ssZ"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         end_date.setText(sdf.format(myCalendar.getTime()));
@@ -134,8 +134,8 @@ public class PromPlaceActivity extends AppCompatActivity {
             numberPhone=getPhone();
             Log.i("numtelef", "numtelf " + numberPhone);
         } catch (Exception e) {
-
-            Toast.makeText(getApplicationContext(), "No se puede completar carga de su numero de telefono\n.Contactar admin ", Toast.LENGTH_SHORT).show();
+            Log.i("numtelef", "numtelf No se puede completar carga de su numero de telefono\\n.Contactar admin" );
+            //Toast.makeText(getApplicationContext(), "No se puede completar carga de su numero de telefono\n.Contactar admin ", Toast.LENGTH_SHORT).show();
         }
 
         start_date.setOnTouchListener(new View.OnTouchListener() {
@@ -192,72 +192,68 @@ public class PromPlaceActivity extends AppCompatActivity {
                     String url = Util.BASE_URL + "promocion";
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                     StrictMode.setThreadPolicy(policy);
-/*RequestQueue requestQueue = Volley.newRequestQueue(PromPlaceActivity.this);
-                        JSONObject jsonBodyObj = new JSONObject();
-                        jsonBodyObj.put("celular", numberPhone);
-                        jsonBodyObj.put("nombre", promotion_bar.getText().toString());
-                        jsonBodyObj.put("fechaInicio", start_date.getText().toString());
-                        jsonBodyObj.put("fechaFin", end_date.getText().toString());
-                        jsonBodyObj.put("cantidad", cantidad.getText().toString());
-                        jsonBodyObj.put("valor", valor_prom.getText().toString());
-                        jsonBodyObj.put("imagen","");
-                        jsonBodyObj.put("activa", String.valueOf(prom_active.isChecked()));
-                        final String requestBody = jsonBodyObj.toString();*/
                     try {
-   RequestQueue requestQueue = Volley.newRequestQueue(PromPlaceActivity.this);
-                        JSONObject jsonBodyObj = new JSONObject();
-                        jsonBodyObj.put("celular", numberPhone);
-                        jsonBodyObj.put("nombre", promotion_bar.getText().toString());
-                        jsonBodyObj.put("fechaInicio", start_date.getText().toString());
-                        jsonBodyObj.put("fechaFin", end_date.getText().toString());
-                        jsonBodyObj.put("cantidad", cantidad.getText().toString());
-                        jsonBodyObj.put("valor", valor_prom.getText().toString());
-                        jsonBodyObj.put("imagen","");
-                        jsonBodyObj.put("activa", String.valueOf(prom_active.isChecked()));
-                        final String requestBody = jsonBodyObj.toString();
-                        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                progress.dismiss();
-                                Log.i("LOG_RESPONSE", response);
-                            }
-                        }, new Response.ErrorListener() {
+                          RequestQueue requestQueue = Volley.newRequestQueue(PromPlaceActivity.this);
+                        Map<String, String> postParam= new HashMap<String, String>();
+                        postParam.put("celular", numberPhone);
+                        postParam.put("nombre", promotion_bar.getText().toString());
+                        postParam.put("fechaInicio", start_date.getText().toString());
+                        postParam.put("fechaFin", end_date.getText().toString());
+                        postParam.put("cantidad", cantidad.getText().toString());
+                        postParam.put("valor", valor_prom.getText().toString());
+                        postParam.put("imagen","");
+                        postParam.put("activa", String.valueOf(prom_active.isChecked()));
+                        Log.i("promocion","promocion info: "+new JSONObject(postParam));
+                        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                                url, new JSONObject(postParam),
+                                new Response.Listener<JSONObject>() {
+
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        progress.dismiss();
+                                        try {
+                                            msgPositive(response.getString("id"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        Log.i("promocion", "promocion response: "+response.toString());
+
+
+                                    }
+                                }, new Response.ErrorListener() {
+
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 progress.dismiss();
-                                Log.e("LOG_RESPONSE", error.toString());
+                                msgNegative("1");
+                                Log.i("promocion", "promocion Error: " + error.getMessage() +" codigo "+error.networkResponse.statusCode);
+
                             }
                         }) {
+
+                            /**
+                             * Passing some request headers
+                             * */
                             @Override
-                            public String getBodyContentType() {
-                                return "application/json; charset=utf-8";
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                HashMap<String, String> headers = new HashMap<String, String>();
+                                headers.put("Content-Type", "application/json; charset=utf-8");
+                                return headers;
                             }
 
-                            @Override
-                            public byte[] getBody() throws AuthFailureError {
-                                try {
-                                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                                } catch (UnsupportedEncodingException uee) {
-                                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody , "utf-8");
-                                    return null;
-                                }
-                            }
 
-                            @Override
-                            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                                String responseString = "";
-                                if (response != null) {
-                                    responseString = String.valueOf(response.statusCode);
-                                }
-                                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                            }
+
                         };
 
-                        requestQueue.add(stringRequest);
+                        jsonObjReq.setTag("promocion");
+
+                        requestQueue.add(jsonObjReq);
+
 
                     } catch (Exception e) {
                         progress.dismiss();
-                        Toast.makeText(getApplicationContext(),"error de formulario",Toast.LENGTH_SHORT).show();
+                        msgNegative("2");
+
 
                     }
                 }
@@ -292,9 +288,34 @@ public class PromPlaceActivity extends AppCompatActivity {
         }
         return MyPhoneNumber;
     }
+private void msgNegative(String orden){
+    final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+    alertDialogBuilder
+            .setTitle(getString(R.string.app_name))
+            .setMessage(orden.concat(" Ha ocurrido un error. Por favor contacte al administrador de la aplicación"))
+            .setCancelable(false)
+            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            }).show();
+}
 
-
-
+    private void msgPositive(String orden){
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder
+                .setTitle(getString(R.string.app_name))
+                .setMessage("Promocion "+orden+" creada")
+                .setCancelable(false)
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        finish();
+                    }
+                }).show();
+    }
 
 
 }

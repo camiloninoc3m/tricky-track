@@ -102,7 +102,7 @@ public class SearchingActivity extends AppCompatActivity implements GoogleApiCli
             url_coordenada = "&longitud=" + longitudn + "&latitud=" + latitudn;
         }
         url = url + url_coordenada;
-        String distancia = "&distancia=4000";
+        String distancia = "&distancia=3000";
         url = url + distancia;
         String valida_horario = "&validaHorario";
         url = url + valida_horario;
