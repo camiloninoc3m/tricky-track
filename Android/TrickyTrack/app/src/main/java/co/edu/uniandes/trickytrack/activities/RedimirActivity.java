@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import co.edu.uniandes.trickytrack.R;
+import co.edu.uniandes.trickytrack.Utils;
 import co.edu.uniandes.trickytrack.retrofit.Util;
 
 public class RedimirActivity extends AppCompatActivity {
@@ -51,7 +52,7 @@ ImageView qr_redencion;
         String idPromocion=getIntent().getExtras().getString("idPromocion");
 
         try {
-            numberPhone=getPhone();
+            numberPhone= Utils.getPhone(RedimirActivity.this);
             Log.i("numtelef", "numtelf " + numberPhone);
         } catch (Exception e) {
             Log.i("numtelef", "numtelf No se puede completar carga de su numero de telefono\\n.Contactar admin" );
@@ -152,31 +153,5 @@ ImageView qr_redencion;
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private String getPhone() {
-        TelephonyManager tMgr = (TelephonyManager)
-                RedimirActivity.this.getSystemService(Context.TELEPHONY_SERVICE);
 
-        String MyPhoneNumber = "3115321435";
-
-        try {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                //return TODO;
-            }
-            MyPhoneNumber = tMgr.getLine1Number();
-        } catch (NullPointerException ex) {
-        }
-
-        if (MyPhoneNumber.equals("")) {
-            MyPhoneNumber = tMgr.getSubscriberId();
-        }
-        return MyPhoneNumber;
-    }
 }
