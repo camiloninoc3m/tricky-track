@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.RegisterPlaceActivity"
+    android:background="@drawable/backgroud"
+    android:orientation="vertical"
+    >
+
+    <EditText
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:hint="Nombre del establecimiento (*)"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/darker_gray" />
+
+    <EditText
+        android:id="@+id/direccion_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_bar"
+        android:layout_margin="10dp"
+        android:hint="Direccion (*)"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/darker_gray" />
+<LinearLayout
+    android:layout_above="@+id/search_btn"
+    android:layout_below="@+id/direccion_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp"
+            android:text="@string/gender"
+            android:textColor="@android:color/white" />
+
+        <android.support.v7.widget.RecyclerView
+
+            android:id="@+id/generos_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+
+            >
+
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_margin="10dp"
+
+        android:id="@+id/dias"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+<CheckBox
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Lunes"
+    android:textColor="@android:color/white"
+    android:id="@+id/lunes"
+    />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Martes"
+            android:textColor="@android:color/white"
+            android:id="@+id/martes"
+            />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Miercoles"
+            android:textColor="@android:color/white"
+            android:id="@+id/miercoles"
+            />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jueves"
+            android:textColor="@android:color/white"
+            android:id="@+id/jueves"
+            />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Viernes"
+            android:textColor="@android:color/white"
+            android:id="@+id/viernes"
+            />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sabado"
+            android:textColor="@android:color/white"
+            android:id="@+id/sabado"
+            />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Domingo"
+            android:textColor="@android:color/white"
+            android:id="@+id/domingo"
+            />
+    </LinearLayout>
+</LinearLayout>
+
+    <Button
+
+        android:id="@+id/search_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:background="@color/colorPrimary"
+        android:text="REGISTRAR"
+        android:textColor="@android:color/white" />
+</RelativeLayout>
