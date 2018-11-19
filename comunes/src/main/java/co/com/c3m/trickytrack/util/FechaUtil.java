@@ -40,4 +40,18 @@ public class FechaUtil {
         
         return cal.getTime();
 	}
+	
+	public static Date agregarHoras(Date ahora, Integer horas) {
+		Calendar calAhora = Calendar.getInstance();
+		calAhora.add(Calendar.HOUR_OF_DAY, horas);
+		
+		return calAhora.getTime();
+	}
+	
+	public static Date reducirHoras(Date ahora, Integer horas) {
+		Calendar calAhora = Calendar.getInstance();
+		calAhora.add(Calendar.HOUR_OF_DAY, horas*-1);
+		
+		return calAhora.getTime();
+	}
 }

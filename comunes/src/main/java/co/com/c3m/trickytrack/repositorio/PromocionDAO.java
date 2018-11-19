@@ -15,9 +15,11 @@ public interface PromocionDAO extends CrudRepository<Promocion, Long>{
 
 	List<Promocion> findAllByEstablecimiento(Establecimiento establecimiento);
 	
+	Promocion findByEstablecimientoAndNombre(Establecimiento establecimiento, String nombre);
+	
 	@Query("select p from Promocion p  "
 			+ "where p.establecimiento=:establecimiento "
 			+ "and (current_timestamp() between p.fechaInicio and p.fechaFin) "
 			+ "and (p.cantidad is null or p.cantidad is not null and p.cantidad>p.cupones.size) ")
-	List<Promocion> encontrarDisponibles(@Param("establecimiento")Establecimiento establecimiendo);
+	List<Promocion> buscarDisponibles(@Param("establecimiento")Establecimiento establecimiendo);
 }

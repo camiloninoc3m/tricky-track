@@ -27,10 +27,10 @@ public class Cupon {
 	private String codigoQR;
 
 	@NotNull
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaAdquisicion = new Date();
 	
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRedencion;
 	
 	@NotNull
@@ -51,8 +51,6 @@ public class Cupon {
 		this.cliente = cliente;
 		this.codigoQR = codigoQR;
 	}
-
-
 
 	public Long getId() {
 		return id;

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.c3m.trickytrack.api.RegistroPromocionDTO;
+import co.com.c3m.trickytrack.api.RegistroPromocionResDTO;
 import co.com.c3m.trickytrack.dominio.Promocion;
 import co.com.c3m.trickytrack.repositorio.EstablecimientoDAO;
 import co.com.c3m.trickytrack.repositorio.PromocionDAO;
@@ -21,8 +22,9 @@ public class RegistroPromocionController {
 	private PromocionDAO dao;
 	
 	@RequestMapping(path="/promocion", method=RequestMethod.POST)
-	public Long registrarPromocion(
+	public RegistroPromocionResDTO registrarPromocion(
 			@RequestBody RegistroPromocionDTO dto) {
+		
 		Promocion entidad = new Promocion();
 		entidad.setId(dto.getId());
 		entidad.setNombre(dto.getNombre());
@@ -39,7 +41,17 @@ public class RegistroPromocionController {
 			entidad.setEstablecimiento(establecimientoDao.findByCelular(dto.getCelular()));
 		}
 		
+		Promocion buscada = 
+				dao.findByEstablecimientoAndNombre(entidad.getEstablecimiento(), entidad.getNombre());
+		
+		if (buscada!=null) {
+			throw new RuntimeException("Ya existe una promocion con este nombre para el establecimiento");
+		}
+		
 		dao.save(entidad);
-		return entidad.getId();
+		
+		RegistroPromocionResDTO respuesta = new RegistroPromocionResDTO();
+		respuesta.setId(entidad.getId());
+		return respuesta;
 	}
 }

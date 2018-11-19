@@ -6,19 +6,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.com.c3m.trickytrack.api.RegistroEstablecimientoResDTO;
 import co.com.c3m.trickytrack.dominio.Establecimiento;
 import co.com.c3m.trickytrack.repositorio.EstablecimientoDAO;
 
 @RestController
-public class RegistroControlador {
+public class RegistroEstablecimientoControlador {
 
 	@Autowired
 	private EstablecimientoDAO dao;
 	
 	@RequestMapping(path="/establecimiento", method=RequestMethod.POST)
-	public Long registrarEstablecimiento(
+	public RegistroEstablecimientoResDTO registrarEstablecimiento(
 			@RequestBody Establecimiento establecimiento) {
+		Establecimiento buscado = dao.findByCelular(establecimiento.getCelular());
+		if (buscado!=null) {
+			throw new RuntimeException("El celular ingresado ya esta asociado a otro establecimiento con id:"+establecimiento.getId());
+		}
+		
 		dao.save(establecimiento);
-		return establecimiento.getId();
+		
+		RegistroEstablecimientoResDTO respuesta = new RegistroEstablecimientoResDTO();
+		respuesta.setId(establecimiento.getId());
+		return respuesta;
 	}
 }

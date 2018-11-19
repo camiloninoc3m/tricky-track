@@ -26,6 +26,6 @@ public class ConsultaPromocionesControlador {
 			@PathVariable("idEstablecimiento") Long idEstablecimiento){
 		Establecimiento establecimiento = new Establecimiento();
 		establecimiento.setId(idEstablecimiento);
-		return conversor.listEntidadesADtos(dao.encontrarDisponibles(establecimiento));
+		return conversor.listEntidadesADtos(dao.buscarDisponibles(establecimiento));
 	}
 }

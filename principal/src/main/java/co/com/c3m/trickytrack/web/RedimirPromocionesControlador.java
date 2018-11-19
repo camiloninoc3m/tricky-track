@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.c3m.trickytrack.api.EntradaRedimirDTO;
+import co.com.c3m.trickytrack.api.RedimirPromocionResDTO;
 import co.com.c3m.trickytrack.dominio.Cliente;
 import co.com.c3m.trickytrack.dominio.Cupon;
 import co.com.c3m.trickytrack.dominio.Promocion;
@@ -23,7 +24,7 @@ public class RedimirPromocionesControlador {
 	private CuponDAO dao;
 
 	@RequestMapping(path="/cupon", method=RequestMethod.POST)
-	public String redimirPromocion(
+	public RedimirPromocionResDTO redimirPromocion(
 			@RequestBody EntradaRedimirDTO entrada){
 		Promocion promocion = new Promocion();
 		promocion.setId(entrada.getIdPromocion());
@@ -33,8 +34,18 @@ public class RedimirPromocionesControlador {
 		
 		Cliente cliente = clienteDao.findByCelular(entrada.getCelular());
 		
+		Cupon buscado = dao.findByPromocionAndCliente(promocion, cliente);
+		
+		if (buscado!=null) {
+			throw new RuntimeException("El cliente ya ha adquirido un cupon para esa promocion");
+		
+		}
+		
 		Cupon cupon = new Cupon(promocion, cliente, codigoQR);
 		dao.save(cupon);
-		return codigoQR;
+		
+		RedimirPromocionResDTO respuesta = new RedimirPromocionResDTO();
+		respuesta.setUrl(codigoQR);
+		return respuesta;
 	}
 }

@@ -2,25 +2,44 @@ package co.com.c3m.trickytrack.web;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.com.c3m.trickytrack.api.ConteoClientesDTO;
+import co.com.c3m.trickytrack.api.ConteoEdadesDTO;
+import co.com.c3m.trickytrack.api.ConteoGeneroDTO;
+import co.com.c3m.trickytrack.api.ReporteClientesResDTO;
+import co.com.c3m.trickytrack.dominio.Cliente;
 import co.com.c3m.trickytrack.dominio.Establecimiento;
+import co.com.c3m.trickytrack.dominio.GeneroMusical;
+import co.com.c3m.trickytrack.dominio.TipoGenero;
+import co.com.c3m.trickytrack.repositorio.ClienteDAO;
+import co.com.c3m.trickytrack.repositorio.EstablecimientoDAO;
 import co.com.c3m.trickytrack.repositorio.rowmapper.EstablecimientoRowmapper;
 import co.com.c3m.trickytrack.util.CadenaUtil;
+import co.com.c3m.trickytrack.util.FechaUtil;
 
 @RestController
 public class ConsultaEstablecimientosControlador {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	private EstablecimientoDAO dao;
+	
+	@Autowired
+	private ClienteDAO clienteDao;
 
 	@RequestMapping("/establecimientos")
 	public List<Establecimiento> obtenerEstablecimientos(
@@ -107,5 +126,81 @@ public class ConsultaEstablecimientosControlador {
 		qry.append("LIMIT 0,20 ");
 
 		return jdbcTemplate.query(qry.toString(), parametros.toArray(), new EstablecimientoRowmapper() );
+	}
+	
+	@RequestMapping(path="/establecimiento/{id}/reporteClientes", method=RequestMethod.GET)
+	public ReporteClientesResDTO obtenerReporte(
+			@PathVariable("id")Long id) {
+		ReporteClientesResDTO response = new ReporteClientesResDTO();
+		
+		Establecimiento establecimiento = dao.findById(id).get();
+		Date ahora = new Date();
+		Date fechaInicio = FechaUtil.reducirHoras(ahora, 1);
+		Date fechaFin = FechaUtil.agregarHoras(ahora, 1);
+		
+		List<Cliente> clientes = clienteDao.obtenerPorCuponesRedimidos(
+				fechaInicio, fechaFin, establecimiento);
+		
+		Integer total = 0;
+		Integer hombres = 0;
+		Integer mujeres = 0;
+		
+		Integer edad;
+		Integer hasta26 = 0;
+		Integer de27a35 = 0;
+		Integer de36a45 = 0;
+		Integer desde49 = 0;
+		
+		List<ConteoGeneroDTO> conteoGeneros = new ArrayList<>();
+		for (Cliente cliente : clientes) {
+			total ++;
+			if (TipoGenero.HOMBRE.equals(cliente.getGenero())) {
+				hombres  ++;
+			}else {
+				mujeres ++;
+			}
+			
+			edad = cliente.getEdad();
+			
+			if (edad<=26) {
+				hasta26 ++;
+			}else if(edad>=27 && edad<=35) {
+				de27a35++;
+			}else if(edad>=36 && edad<=45) {
+				de36a45++;
+			}else {
+				desde49++;
+			}
+			
+			for (GeneroMusical genero : cliente.getGeneros()) {
+				ConteoGeneroDTO conteo = new ConteoGeneroDTO(genero.getNombre(),1);
+				int index = conteoGeneros.indexOf(conteo);
+				if (index==-1) {
+					conteoGeneros.add(conteo);
+					continue;
+				}
+
+				conteoGeneros.remove(conteo);
+				conteo.setTotal(conteoGeneros.get(index).getTotal() +1);
+				conteoGeneros.add(conteo);
+			}
+		}
+		
+		ConteoClientesDTO conteoCliente = new ConteoClientesDTO();
+		conteoCliente.setTotal(total);
+		conteoCliente.setHombres(hombres);
+		conteoCliente.setMujeres(mujeres);
+		
+		ConteoEdadesDTO conteoEdades = new ConteoEdadesDTO();
+		conteoEdades.setHasta26(hasta26);
+		conteoEdades.setDe27a35(de27a35);
+		conteoEdades.setDe36a45(de36a45);
+		conteoEdades.setDesde49(desde49);
+		
+		response.setClientes(conteoCliente);
+		response.setEdades(conteoEdades);
+		response.setGeneros(conteoGeneros);
+		
+		return response;
 	}
 }
