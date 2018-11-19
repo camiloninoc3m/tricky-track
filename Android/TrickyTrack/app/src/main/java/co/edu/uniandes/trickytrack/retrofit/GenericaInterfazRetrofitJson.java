@@ -12,4 +12,6 @@ public interface GenericaInterfazRetrofitJson {
 
     @GET
     Call<List<ExamplePromocion>> getPromociones(@Url String url);
+    @GET
+    Call<List<ExampleGeneros>> getGeneros(@Url String url);
 }

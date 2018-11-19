@@ -2,6 +2,7 @@ package co.edu.uniandes.trickytrack.models;
 
 public class Model {
     private String text;
+
     private boolean isSelected = false;
 
     public Model(String text) {

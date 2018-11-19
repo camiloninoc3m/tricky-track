@@ -23,6 +23,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -123,6 +124,7 @@ public class PromPlaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prom_place);
         getSupportActionBar().setTitle("Crear Promociones");
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         promotion_bar = (EditText) findViewById(R.id.promotion_bar);
         start_date = (EditText) findViewById(R.id.start_date);
         end_date = (EditText) findViewById(R.id.end_date);
