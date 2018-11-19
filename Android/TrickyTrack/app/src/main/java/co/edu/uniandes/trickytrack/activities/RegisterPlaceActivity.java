@@ -154,20 +154,7 @@ private void enviar(){
     try {
         RequestQueue requestQueue = Volley.newRequestQueue(RegisterPlaceActivity.this);
 
-        /*Map<String, String> postParam= new HashMap<String, String>();
-        postParam.put("nombre", search_bar.getText().toString());
-        postParam.put("direccion",direccion_bar.getText().toString());
-        postParam.put("longitud", String.valueOf(longitudn));
-        postParam.put("latitud", String.valueOf(latitudn));
-        postParam.put("lunes", String.valueOf(lunes.isChecked()));
-        postParam.put("martes", String.valueOf(martes.isChecked()));
-        postParam.put("miercoles", String.valueOf(miercoles.isChecked()));
-        postParam.put("jueves", String.valueOf(jueves.isChecked()));
-        postParam.put("viernes", String.valueOf(viernes.isChecked()));
-        postParam.put("sabado", String.valueOf(sabado.isChecked()));
-        postParam.put("domingo", String.valueOf(domingo.isChecked()));
-        postParam.put("generos", generos);
-        postParam.put("celular", numberPhone);*/
+
         principal.put("nombre", search_bar.getText().toString());
         principal.put("direccion",direccion_bar.getText().toString());
         principal.put("longitud", String.valueOf(longitudn));

@@ -266,7 +266,7 @@ public class SearchingActivity extends AppCompatActivity implements GoogleApiCli
             Log.i(LOGTAG, "Longitud: " + String.valueOf(loc.getLongitude()));
             latitudn = loc.getLatitude();
             longitudn = loc.getLongitude();
-
+            searchPlaces();
 
         } else {
             Log.i(LOGTAG, "Latitud: (desconocida)");
@@ -326,7 +326,7 @@ public class SearchingActivity extends AppCompatActivity implements GoogleApiCli
         //Mostramos la nueva ubicación recibida
 
         updateUI(location);
-        searchPlaces();
+
     }
 
 //end region gps
