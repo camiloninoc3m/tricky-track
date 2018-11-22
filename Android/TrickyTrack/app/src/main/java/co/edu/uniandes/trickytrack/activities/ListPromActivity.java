@@ -34,7 +34,6 @@ public class ListPromActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_prom);
-        getSupportActionBar().setTitle("Promociones");
         final ProgressDialog progress = new ProgressDialog(ListPromActivity.this);
         progress.setMessage("Cargando");
         progress.show();
@@ -43,8 +42,9 @@ public class ListPromActivity extends AppCompatActivity {
          mRecyclerView = (RecyclerView) findViewById(R.id.promociones);
         final LinearLayoutManager manager = new LinearLayoutManager(ListPromActivity.this);
 
-
+        String nombre=getIntent().getExtras().getString("nombre");
         Integer idEstablecimiento = getIntent().getExtras().getInt("idEstablecimiento");
+        getSupportActionBar().setTitle("Promociones "+nombre);
         GenericaInterfazRetrofitJson mService = null;
         mService = Util.getService();
         mService.getPromociones("promociones/establecimiento/"+idEstablecimiento).enqueue(new Callback<List<ExamplePromocion>>() {
