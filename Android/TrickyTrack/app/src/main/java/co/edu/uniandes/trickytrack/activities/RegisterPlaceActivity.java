@@ -206,7 +206,6 @@ private void enviar(){
                 try {
                     String jsonError = new String(error.networkResponse.data);
                     JSONObject obj = new JSONObject(jsonError);
-                    //setIdEstablecimiento(obj.getString("id"));
                     msgNegative( obj.getString("message"));
 
 
