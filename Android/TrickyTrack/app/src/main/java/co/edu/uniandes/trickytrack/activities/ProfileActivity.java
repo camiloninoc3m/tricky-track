@@ -60,8 +60,19 @@ public class ProfileActivity extends AppCompatActivity {
         client_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ProfileActivity.this, SearchingActivity.class);
-                startActivity(intent);
+
+                SharedPreferences prefs =
+                        getSharedPreferences("PreferenciasEstablecimiento", Context.MODE_PRIVATE);
+
+                String idCliente = prefs.getString("idCliente", "000");
+
+                if(idCliente.equals("000")){//no existe idCliente
+                    Intent intent = new Intent(ProfileActivity.this, RegisterCustomerActivity.class);
+                    startActivity(intent);
+                }else {//si existe idCliente
+                    Intent intent = new Intent(ProfileActivity.this, SearchingActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }

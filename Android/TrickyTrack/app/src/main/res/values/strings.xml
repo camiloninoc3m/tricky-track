@@ -1,4 +1,8 @@
 <resources>
+    <array name="gender">
+        <item>HOMBRE</item>
+        <item>MUJER</item>
+    </array>
     <string name="barpromotion">Nombre de la promocion</string>
     <string name="client">Cliente</string>
     <string name="place">Establecimiento</string>

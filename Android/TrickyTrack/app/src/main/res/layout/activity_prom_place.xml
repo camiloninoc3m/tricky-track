@@ -147,10 +147,11 @@
         android:id="@+id/save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_margin="10dp"
-        android:text="Registrar Promocion"
-        android:textColor="@android:color/black"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:background="@color/colorPrimary"
+        android:text="REGISTRAR PROMOCION"
+        android:textColor="@android:color/white"
         />
 </LinearLayout>
 </LinearLayout>

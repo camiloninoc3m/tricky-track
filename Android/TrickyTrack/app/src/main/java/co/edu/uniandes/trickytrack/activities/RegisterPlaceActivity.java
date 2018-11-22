@@ -184,7 +184,7 @@ private void enviar(){
 
 
                             }else{
-                               // setIdEstablecimiento(response.getString("id"));
+
                                 msgNegative(response.getString("message"));
 
 

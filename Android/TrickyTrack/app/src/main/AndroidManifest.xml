@@ -63,7 +63,10 @@
         <activity
             android:name=".activities.RegisterPlaceActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.EstadisticasActivity"
+        <activity
+            android:name=".activities.EstadisticasActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.RegisterCustomerActivity"
             android:screenOrientation="portrait"
             ></activity>
     </application>

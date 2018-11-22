@@ -57,7 +57,7 @@ public class SplashActivity extends Activity {
                         setIdEstablecimiento("000");
                     }
                     if (response.body().getIdCliente() != null) {
-                        setIdEstablecimiento(String.valueOf(response.body().getIdCliente()));
+                        setIdCliente(String.valueOf(response.body().getIdCliente()));
                     } else {
                         setIdCliente("000");
                     }
