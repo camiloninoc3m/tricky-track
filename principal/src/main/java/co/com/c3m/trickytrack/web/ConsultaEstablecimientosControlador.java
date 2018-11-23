@@ -25,6 +25,7 @@ import co.com.c3m.trickytrack.dominio.GeneroMusical;
 import co.com.c3m.trickytrack.dominio.TipoGenero;
 import co.com.c3m.trickytrack.repositorio.ClienteDAO;
 import co.com.c3m.trickytrack.repositorio.EstablecimientoDAO;
+import co.com.c3m.trickytrack.repositorio.GeneroDAO;
 import co.com.c3m.trickytrack.repositorio.rowmapper.EstablecimientoRowmapper;
 import co.com.c3m.trickytrack.util.CadenaUtil;
 import co.com.c3m.trickytrack.util.FechaUtil;
@@ -40,6 +41,9 @@ public class ConsultaEstablecimientosControlador {
 	
 	@Autowired
 	private ClienteDAO clienteDao;
+	
+	@Autowired
+	private GeneroDAO generoDao;
 
 	@RequestMapping("/establecimientos")
 	public List<Establecimiento> obtenerEstablecimientos(
@@ -110,7 +114,7 @@ public class ConsultaEstablecimientosControlador {
 				break;
 			}
 
-			qry.append("AND (TIME(?) BETWEEN e.hora_inicio AND '23:59:59' ")
+			qry.append("AND TIME(?) BETWEEN e.hora_inicio AND '23:59:59' ")
 			.append("OR TIME(?) BETWEEN '00:00:00' AND e.hora_cierre ");
 
 			parametros.add(cal.getTime());
@@ -141,6 +145,8 @@ public class ConsultaEstablecimientosControlador {
 		List<Cliente> clientes = clienteDao.obtenerPorCuponesRedimidos(
 				fechaInicio, fechaFin, establecimiento);
 		
+		Iterable<GeneroMusical> generos = generoDao.findAll();
+		
 		Integer total = 0;
 		Integer hombres = 0;
 		Integer mujeres = 0;
@@ -152,6 +158,12 @@ public class ConsultaEstablecimientosControlador {
 		Integer desde49 = 0;
 		
 		List<ConteoGeneroDTO> conteoGeneros = new ArrayList<>();
+		
+		for (GeneroMusical genero : generos) {
+			ConteoGeneroDTO conteo = new ConteoGeneroDTO(genero.getNombre(),0);
+			conteoGeneros.add(conteo);
+		}
+		
 		for (Cliente cliente : clientes) {
 			total ++;
 			if (TipoGenero.HOMBRE.equals(cliente.getGenero())) {
@@ -172,17 +184,15 @@ public class ConsultaEstablecimientosControlador {
 				desde49++;
 			}
 			
-			for (GeneroMusical genero : cliente.getGeneros()) {
+			for (GeneroMusical genero : generos) {
 				ConteoGeneroDTO conteo = new ConteoGeneroDTO(genero.getNombre(),1);
 				int index = conteoGeneros.indexOf(conteo);
-				if (index==-1) {
+				
+				if (cliente.getGeneros().contains(genero)) {
+					conteoGeneros.remove(conteo);
+					conteo.setTotal(conteoGeneros.get(index).getTotal() +1);
 					conteoGeneros.add(conteo);
-					continue;
 				}
-
-				conteoGeneros.remove(conteo);
-				conteo.setTotal(conteoGeneros.get(index).getTotal() +1);
-				conteoGeneros.add(conteo);
 			}
 		}
 		

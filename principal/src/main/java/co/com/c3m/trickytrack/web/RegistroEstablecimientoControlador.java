@@ -21,7 +21,7 @@ public class RegistroEstablecimientoControlador {
 			@RequestBody Establecimiento establecimiento) {
 		Establecimiento buscado = dao.findByCelular(establecimiento.getCelular());
 		if (buscado!=null) {
-			throw new RuntimeException("El celular ingresado ya esta asociado a otro establecimiento con id:"+establecimiento.getId());
+			throw new RuntimeException("El celular ingresado ya esta asociado a otro establecimiento con id:"+buscado.getId());
 		}
 		
 		dao.save(establecimiento);
