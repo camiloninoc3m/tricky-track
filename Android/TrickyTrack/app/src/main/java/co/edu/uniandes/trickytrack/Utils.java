@@ -38,6 +38,8 @@ public class Utils {
         if (MyPhoneNumber.equals("")) {
             MyPhoneNumber = tMgr.getSubscriberId();
         }
-        return MyPhoneNumber;
+
+        return MyPhoneNumber != null && MyPhoneNumber.length() > 2 ? MyPhoneNumber.substring(3) : null;
+        //return MyPhoneNumber;
     }
 }
