@@ -14,12 +14,9 @@ public class ExampleEstadistica {
     @SerializedName("edades")
     @Expose
     private Edades edades;
-    /*@SerializedName("generos")
-    @Expose
-    private Generos generos;*/
     @SerializedName("generos")
     @Expose
-    private List<Object> generos = null;
+    private List<Genero> generos = null;
 
     public Clientes getClientes() {
         return clientes;
@@ -37,19 +34,12 @@ public class ExampleEstadistica {
         this.edades = edades;
     }
 
-   /* public Generos getGeneros() {
-        return generos;
-    }
 
-    public void setGeneros(Generos generos) {
-        this.generos = generos;
-    }
-*/
-   public List<Object> getGeneros() {
+   public List<Genero> getGeneros() {
        return generos;
    }
 
-    public void setGeneros(List<Object> generos) {
+    public void setGeneros(List<Genero> generos) {
         this.generos = generos;
     }
 }

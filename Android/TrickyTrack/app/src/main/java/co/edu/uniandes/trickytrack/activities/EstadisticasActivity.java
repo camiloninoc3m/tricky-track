@@ -28,17 +28,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EstadisticasActivity extends AppCompatActivity {
-    GraphView graph,graphedad,graphmusica;
+    GraphView graph, graphedad, graphmusica;
     TextView personas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_estadisticas);
         getSupportActionBar().setTitle("Estadisticas");
-         graph = (GraphView) findViewById(R.id.graph);
+        graph = (GraphView) findViewById(R.id.graph);
         graphedad = (GraphView) findViewById(R.id.graphedad);
         graphmusica = (GraphView) findViewById(R.id.graphmusica);
-        personas=(TextView)findViewById(R.id.personas);
+        personas = (TextView) findViewById(R.id.personas);
         final ProgressDialog progress = new ProgressDialog(EstadisticasActivity.this);
         progress.setMessage("Cargando...");
         progress.show();
@@ -50,7 +51,7 @@ public class EstadisticasActivity extends AppCompatActivity {
 
         GenericaInterfazRetrofitJson mService = null;
         mService = Util.getService();
-        mService.getEstadisticas("establecimiento/"+idEstablecimiento+"/reporteClientes").enqueue(new Callback<ExampleEstadistica>() {
+        mService.getEstadisticas("establecimiento/" + idEstablecimiento + "/reporteClientes").enqueue(new Callback<ExampleEstadistica>() {
             @Override
             public void onResponse(Call<ExampleEstadistica> call, Response<ExampleEstadistica> response) {
 
@@ -59,24 +60,24 @@ public class EstadisticasActivity extends AppCompatActivity {
                 } else {
                     msgNegative("1. ");
                 }
-progress.dismiss();
+                progress.dismiss();
             }
 
             @Override
             public void onFailure(Call<ExampleEstadistica> call, Throwable t) {
                 progress.dismiss();
-                Log.i("falla","falla "+t.toString());
+                Log.i("falla", "falla " + t.toString());
                 msgNegative("2. ");
             }
         });
     }
 
 
-    private void msgNegative(String orden){
+    private void msgNegative(String orden) {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(EstadisticasActivity.this);
         alertDialogBuilder
                 .setTitle(getString(R.string.app_name))
-                .setMessage(orden+"Ha ocurrido un error con las estadisticas. Contacte con el administrador de la aplicación")
+                .setMessage(orden + "Ha ocurrido un error con las estadisticas. Contacte con el administrador de la aplicación")
                 .setCancelable(false)
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -86,15 +87,15 @@ progress.dismiss();
                 }).show();
     }
 
-    void graficar(ExampleEstadistica datos){
+    void graficar(ExampleEstadistica datos) {
         //personas
-        try{
-            personas.setText("Total personas: "+datos.getClientes().getTotal());
+        try {
+            personas.setText("Total personas: " + datos.getClientes().getTotal());
             StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
-            staticLabelsFormatter.setHorizontalLabels(new String[] {"Hombres", "Mujeres"});
+            staticLabelsFormatter.setHorizontalLabels(new String[]{"Hombres", "Mujeres"});
 
 
-            BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
+            BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[]{
                     new DataPoint(0, datos.getClientes().getHombres()),//hombres
                     new DataPoint(1, datos.getClientes().getMujeres())//mujeres
 
@@ -114,101 +115,99 @@ progress.dismiss();
             series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
                 @Override
                 public int get(DataPoint data) {
-                    return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+                    return Color.rgb((int) data.getX() * 255 / 4, (int) Math.abs(data.getY() * 255 / 6), 100);
                 }
             });
 
             series.setSpacing(20);
             series.setDrawValuesOnTop(true);
             series.setValuesOnTopColor(Color.WHITE);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
-       //edades
-        try{
+        //edades
+        try {
             StaticLabelsFormatter staticLabelsFormatter2 = new StaticLabelsFormatter(graphedad);
-            staticLabelsFormatter2.setHorizontalLabels(new String[] {"Hasta 26", "de 27 a 35","de 36 a 45","desde 49"});
+            staticLabelsFormatter2.setHorizontalLabels(new String[]{"Hasta 26", "de 27 a 35", "de 36 a 45", "desde 49"});
+
+            int total = datos.getClientes().getTotal();
+
+
+            BarGraphSeries<DataPoint> series2 = new BarGraphSeries<>(new DataPoint[]{
+                    new DataPoint(0, (datos.getEdades().getHasta26()*100)/total),
+                    new DataPoint(1, (datos.getEdades().getDe27a35()*100)/total),
+                    new DataPoint(2, (datos.getEdades().getDe36a45()*100)/total),
+                    new DataPoint(3, (datos.getEdades().getDesde49()*100)/total),
+
+
+            });
+            graphedad.getViewport().setScrollable(true);
+            graphedad.getViewport().setXAxisBoundsManual(true);
+            graphedad.getViewport().setMinX(0);
+            graphedad.getViewport().setMaxX(3);
+
+// set manual Y bounds
+            graphedad.getViewport().setYAxisBoundsManual(true);
+            graphedad.getViewport().setMinY(0);
+            graphedad.getViewport().setMaxY(100);//total porcentual
+            graphedad.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter2);
+            graphedad.addSeries(series2);
+            series2.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+                @Override
+                public int get(DataPoint data) {
+                    return Color.rgb((int) data.getX() * 255 / 4, (int) Math.abs(data.getY() * 255 / 6), 100);
+                }
+            });
+
+            series2.setSpacing(20);
+            series2.setDrawValuesOnTop(true);
+            series2.setValuesOnTopColor(Color.WHITE);
+
+        } catch (Exception e) {
+
+        }
+//musica
+        try {
+
+            StaticLabelsFormatter staticLabelsFormatter3 = new StaticLabelsFormatter(graphmusica);
+            String[] generosLabel = new String[datos.getGeneros().size()];
+            for (int i = 0; i < datos.getGeneros().size(); i++) {
+                generosLabel[i] = datos.getGeneros().get(i).getGenero();
+            }
+            staticLabelsFormatter3.setHorizontalLabels(generosLabel);
 
             int total=datos.getClientes().getTotal();
 
 
-            BarGraphSeries<DataPoint> series2 = new BarGraphSeries<>(new DataPoint[] {
-                    new DataPoint(0, datos.getEdades().getHasta26()),
-                    new DataPoint(1, datos.getEdades().getDe27a35()),
-                    new DataPoint(2, datos.getEdades().getDe36a45()),
-                    new DataPoint(3, datos.getEdades().getDesde49())
-
-
-            });
-            graphedad.getViewport().setScrollable(true);
-            graphedad.getViewport().setXAxisBoundsManual(true);
-            graphedad.getViewport().setMinX(0);
-            graphedad.getViewport().setMaxX(3);
-
-// set manual Y bounds
-            graphedad.getViewport().setYAxisBoundsManual(true);
-            graphedad.getViewport().setMinY(0);
-            graphedad.getViewport().setMaxY(100);//total porcentual
-            graphedad.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter2);
-            graphedad.addSeries(series2);
-            series2.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+            DataPoint [] puntosgeneros= new DataPoint[datos.getGeneros().size()];
+            for (int i = 0; i < datos.getGeneros().size(); i++) {
+                DataPoint temporal =new DataPoint(i,datos.getGeneros().get(i).getTotal());
+                puntosgeneros[i] = temporal;
+            }
+            BarGraphSeries<DataPoint> series3 = new BarGraphSeries<>(puntosgeneros);
+            graphmusica.getViewport().setScrollable(true);
+            graphmusica.getViewport().setXAxisBoundsManual(true);
+            graphmusica.getViewport().setMinX(0);
+            graphmusica.getViewport().setMaxX(datos.getGeneros().size());// total generos en x
+            graphmusica.getViewport().setYAxisBoundsManual(true);
+            graphmusica.getViewport().setMinY(0);
+            graphmusica.getViewport().setMaxY(total);//total personas
+            graphmusica.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter3);
+            graphmusica.addSeries(series3);
+            series3.setValueDependentColor(new ValueDependentColor<DataPoint>() {
                 @Override
                 public int get(DataPoint data) {
-                    return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+                    return Color.rgb((int) data.getX() * 255 / 4, (int) Math.abs(data.getY() * 255 / 6), 100);
                 }
             });
 
-            series2.setSpacing(20);
-            series2.setDrawValuesOnTop(true);
-            series2.setValuesOnTopColor(Color.WHITE);
+            series3.setSpacing(5);
+            series3.setDrawValuesOnTop(true);
+            series3.setValuesOnTopColor(Color.WHITE);
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
-//musica
-        /*try{
-            StaticLabelsFormatter staticLabelsFormatter3 = new StaticLabelsFormatter(graphmusica);
-            staticLabelsFormatter3.setHorizontalLabels(new String[] {"Hasta 26", "de 27 a 35","de 36 a 45","desde 49"});
-
-            //int total=datos.getClientes().getTotal();
-            int total=50;
-
-            BarGraphSeries<DataPoint> series2 = new BarGraphSeries<>(new DataPoint[] {
-                    *//*new DataPoint(0, datos.getEdades().getHasta26()),
-                    new DataPoint(1, datos.getEdades().getDe27a35()),
-                    new DataPoint(2, datos.getEdades().getDe36a45()),
-                    new DataPoint(3, datos.getEdades().getDesde49())*//*
-                    new DataPoint(0, (12*100)/total),
-                    new DataPoint(1, (20*100)/total),
-                    new DataPoint(2, (5*100)/total),
-                    new DataPoint(3, (13*100)/total)
-
-            });
-            graphedad.getViewport().setScrollable(true);
-            graphedad.getViewport().setXAxisBoundsManual(true);
-            graphedad.getViewport().setMinX(0);
-            graphedad.getViewport().setMaxX(3);
-
-// set manual Y bounds
-            graphedad.getViewport().setYAxisBoundsManual(true);
-            graphedad.getViewport().setMinY(0);
-            graphedad.getViewport().setMaxY(100);//total porcentual
-            graphedad.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter2);
-            graphedad.addSeries(series2);
-            series2.setValueDependentColor(new ValueDependentColor<DataPoint>() {
-                @Override
-                public int get(DataPoint data) {
-                    return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
-                }
-            });
-
-            series2.setSpacing(20);
-            series2.setDrawValuesOnTop(true);
-            series2.setValuesOnTopColor(Color.WHITE);
-
-        }catch (Exception e){
-
-        }*/
 
     }
 }
